@@ -145,7 +145,7 @@ var addRole = async () => {
             message: "Which department does this role belong in?",
             choices: function () {
               var roleArray = [];
-              for (var i = 0; i < res.length, i++) {
+                for (var i = 0; i < res.length; i++) {
                 roleArray.push(res[i].department_id);
               }
               return roleArray;
@@ -207,7 +207,7 @@ var addEmployee = async () => {
         message: "Who is the employee's manager?",
         choices: function () {
           var empArray = [];
-          for (var i = 0; i < res.length, i++) {
+          for (var i = 0; i < res.length; i++) {
             empArray.push(res[i].manager_id);
           }
           return empArray;
