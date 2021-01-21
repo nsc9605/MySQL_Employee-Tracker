@@ -3,10 +3,10 @@ DROP DATABASE IF EXISTS employeeDB;
 CREATE DATABASE employeeDB;
 
 USE employeeDB;
-ß
+
 CREATE TABLE department (
     id INT NOT NULL,
-    name VARCHAR(30) NULL,
+    department_name VARCHAR(30) NULL,
     PRIMARY KEY(id),
 );
 

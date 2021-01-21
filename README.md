@@ -33,6 +33,7 @@ The following dependencies are required to be installed for this application to 
 
       npm i
       npm install mysql
+      npm i console.table
 
 ## Usage
 
