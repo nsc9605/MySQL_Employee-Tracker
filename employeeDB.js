@@ -286,27 +286,5 @@ function updateEmployeeRoles() {
           },
         },
       ])
-      .then(
-        function (answer) {
-          let name = answer.update_role;
-        },
-        connection.query("SELECT * FROM role", function (err, res) {
-          if (err) throw err;
-          inquirer.prompt([
-            {
-              name: "change_role",
-              type: "list",
-              message: "What is the employee's new role?",
-              choices: function () {
-                changeRoleList = [];
-                res.forEach((res) => {
-                  changeRoleList.push(res.title);
-                });
-                return changeRoleList;
-              },
-            },
-          ]);
-        })
-      );
-  });
-}
+    })
+  }
