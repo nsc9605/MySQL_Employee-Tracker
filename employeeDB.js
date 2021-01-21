@@ -141,7 +141,7 @@ function addEmployee() {
 };
 
 function viewDepartments() {
-  var query = "SELECT * FROM departments";
+  var query = "SELECT * FROM department";
   connection.query(query, function (err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
@@ -153,7 +153,7 @@ function viewDepartments() {
 };
 
 function viewRoles() {
-  var query = "SELECT * FROM roles";
+  var query = "SELECT * FROM role";
   connection.query(query, function (err, res) {
     if (err) throw err;
     console.log("roles");
