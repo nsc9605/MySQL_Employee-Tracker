@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const util = require("util");
-const table = require("console.table");
+const cTable = require("console.table");
 // const { start } = require("repl");
 
 // create the connection information for the sql database
@@ -20,6 +20,7 @@ connection.query = util.promisify(connection.query);
 connection.connect((err) => {
   if (err) throw err;
   console.log("Successfully connected to MySQL server!");
+  console.table(`Welcome to the MySQL Employee Tracker!`);
   startProgram();
 });
 
@@ -43,7 +44,7 @@ var startProgram = async () => {
     });
     switch (answer.task) {
       case "Add a new department":
-        addDepartment();
+        addDepartment(data);
         break;
 
       case "Add a new role":
@@ -55,7 +56,7 @@ var startProgram = async () => {
         break;
 
       case "View all departments":
-        viewDepartments();
+        viewDepartments(data);
         break;
 
       case "View all roles":
@@ -76,12 +77,13 @@ var startProgram = async () => {
     }
   } catch (err) {
     console.log(err);
+    table(answer);
     startProgram();
   }
 };
 
 // ========== Add new department ==========
-var addDepartment = async () => {
+var addDepartment = async (data) => {
   try {
     var answer = await inquirer.prompt([
       {
@@ -103,15 +105,17 @@ var addDepartment = async () => {
           if (isNaN(answer) === false) {
             return true;
           }
-          return false;
+          return ("Please enter a numerical id number");
         },
       },
     ]);
     // console.log("department");
     var result = await connection.query("INSERT INTO department SET ?", {
       department_name: answer.department,
+      id: answer.id,
     });
     console.log(`This department has been added: ${result.department}`);
+    console.table(result)
     startProgram();
   } catch (err) {
     console.log(err);
@@ -144,20 +148,22 @@ var addRole = async () => {
         type: "input",
         message: "Which department does this role belong in?",
         choices: function () {
-          var roleArray = [];
-          for (var i = 0; i < res.length; i++) {
-            roleArray.push(res[i].department_id);
-          }
-          return roleArray;
-        },
-      },
+          let choiceArr = [];
+          for (var i = 0; i < answer.length; i++) {
+            choiceArr.push({
+              name: answer[i].name,
+              id: answer[i].id
+          })
+          return choiceArr;
+        }}
+      }
     ]);
-    var rolesResult = await connection.query("INSERT INTO role SET ?", {
+    var result = await connection.query("INSERT INTO role SET ?", {
       title: answer.title,
       salary: answer.salary || 0,
-      department_id: answer.department_id || 0,
+      id: answer.id || 0,
     });
-    console.log(`This role has been added: ${answer.role_title}`);
+    console.log(`This role has been added: ${result.role}`);
     startProgram();
   } catch (err) {
     console.log(err);
@@ -169,6 +175,17 @@ var addRole = async () => {
 var addEmployee = async () => {
   try {
     var answer = await inquirer.prompt([
+      {
+        name: "id",
+        type: "input",
+        message: "What is the employee\'s id number?",
+        validate: (answer) => {
+          if (isNaN(answer) === false) {
+            return true;
+          }
+          return ("Please enter a numerical id number");
+        },
+      },
       {
         name: "first_name",
         type: "input",
@@ -195,19 +212,15 @@ var addEmployee = async () => {
         name: "role_id",
         type: "list",
         message: "What type of role does the employee have?",
-        choices: function () {
-          var roleIdArr = [];
-          for (var i = 0; i < res.length; i++) {
-            roleIdArr.push(res[i].role_id);
-          }
-          return roleIdArr;
-        },
-        validate: (answer) => {
-          if (isNaN(answer) === false) {
-            return true;
-          }
-          return false;
-        },
+        choices: function (answer) {
+          let choiceArr = [];
+          for (var i = 0; i < answer.length; i++) {
+            choiceArr.push({
+              name: answer[i].name,
+              value: answer[i].id
+          })
+          return choiceArr;
+        }}
       },
       {
         name: "manager_id",
@@ -215,20 +228,22 @@ var addEmployee = async () => {
         message: "Who is the employee's manager?",
         choices: function () {
           var managerIdArr = [];
-          for (var i = 0; i < res.length; i++) {
-            managerIdArr.push(res[i].manager_id);
+          for (var i = 0; i < answer.length; i++) {
+            managerIdArr.push(answer[i].manager_id);
           }
           return managerIdArr;
         },
       },
     ]);
-    var res = await connection.query("INSERT INTO employee SET ?", {
+    var result = await connection.query("INSERT INTO employee SET ?", {
+      id: answer.id,
       first_name: answer.first_name,
       last_name: answer.last_name,
       role_id: answer.role_id || 0,
       manager_id: answer.manager_id || 0,
     });
-    console.log(`The employee has been added ${res.employees}`);
+    console.log(`Success! ${first_name} ${last_name} has been added to your employees database!`);
+    console.table(`Success! ${result.employees} has been added to your employees database!`);
     startProgram();
   } catch (err) {
     console.log(err);
@@ -237,10 +252,10 @@ var addEmployee = async () => {
 };
 
 // ========== VIEW all departments ==========
-function viewDepartments() {
-  connection.query("SELECT * FROM departments", function (err, res) {
+function viewDepartments(data) {
+  connection.query(`SELECT ${result.department} * FROM departments`, function (err, res) {
     if (err) throw err;
-    console.log("Departments:"), console.table("res"), startProgram();
+    console.log("Departments: "), console.table(res), startProgram();
   });
 }
 
@@ -249,21 +264,24 @@ function viewRoles() {
   connection.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
     console.log("roles");
+    console.table(res),
+    startProgram();
+    data(error, results)
     {
       {
         cTable;
       }
     }
-    table("res");
+    console.table(res);
   });
 }
 
 // ========== VIEW all employees ==========
 function viewEmployees() {
-  connection.query("SELECT * FROM employees", function (err, res) {
+  connection.query(`SELECT ${result.employees} * FROM employees`, (err, res) => {
     if (err) throw err;
-    console.log("Employees");
-    console.table("res");
+    console.log(res);
+    console.table(res);
   });
 }
 
