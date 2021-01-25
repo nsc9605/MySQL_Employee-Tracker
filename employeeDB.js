@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 const util = require("util");
 const cTable = require("console.table");
+const { table } = require("console");
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -51,6 +52,7 @@ var startProgram = async () => {
         "Add a new department",
         "Add a new role",
         "Add a new employee",
+        "Remove an employee",
         "View all departments",
         "View all roles",
         "View all employees",
@@ -69,6 +71,10 @@ var startProgram = async () => {
 
       case "Add a new employee":
         addEmployee();
+        break;
+
+      case "Remove an employee":
+        removeEmployee();
         break;
 
       case "View all departments":
@@ -198,11 +204,11 @@ var addEmployee = async () => {
     var managerInfo = await connection.query("SELECT * FROM employees");
     var managerArr = managerInfo.map((empManager) => {
       return {
-        name: empManager.first_name + empManager.last_name,
+        name: empManager.first_name + ' ' + empManager.last_name,
         value: empManager.id,
       };
     });
-
+    
     var answer = await inquirer.prompt([
       {
         name: "first_name",
@@ -229,7 +235,12 @@ var addEmployee = async () => {
         message: "Who is the employee's manager?",
       },
     ]);
-
+    console.table( 
+      "--------------------------",
+      "--------------------------",
+      "        Just Added        ",
+      answer,
+      "--------------------------",);
     var result = await connection.query("INSERT INTO employees SET ?", {
       id: answer.id,
       first_name: answer.first_name,
@@ -237,7 +248,7 @@ var addEmployee = async () => {
       role_id: answer.role_id,
       manager_id: answer.manager_id,
     });
-    console.log(`Success! This employee has been added to your database: ${answer.first_name + answer.last_name}`);
+    console.log(`Success! This employee has been added to your database: ${answer.first_name + ' ' + answer.last_name}`);
     // viewEmployees();
     startProgram();
   } catch (err) {
@@ -308,7 +319,7 @@ var updateEmployeeRoles = async () => {
     var empRow = await connection.query("SELECT * FROM employees");
     var choicesArr = empRow.map((employeeName) => {
       return {
-      name: employeeName.first_name + employeeName.last_name,
+      name: employeeName.first_name + ' ' + employeeName.last_name,
       value: employeeName.id,
       }
     });
