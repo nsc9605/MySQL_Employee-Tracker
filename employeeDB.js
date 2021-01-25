@@ -83,17 +83,20 @@ var startProgram = async () => {
         viewEmployees();
         break;
 
-      // case "Update employee roles":
-      //   updateEmployeeRoles();
-      //   break;
+      case "Update employee roles":
+        updateEmployeeRoles();
+        break;
+
+      case "Exit":
+        exit();
+        break;
 
       default:
-        "Exit";
         connection.end();
     }
   } catch (err) {
     console.log(err);
-    console.table(answer);
+    console.table(answer.task);
     startProgram();
   }
 };
@@ -109,11 +112,19 @@ var addDepartment = async () => {
         validate: inputVal,
       },
     ]);
+    var listOfDepartments = await connection.query("SELECT * FROM department");
+    var doesDepartmentExist = listOfDepartments.some(each => each.department_name === answer.department);
+      if (doesDepartmentExist) {
+        console.log("Department already exists, please try another department!");
+        startProgram();
+        return
+      } 
     var result = await connection.query("INSERT INTO department SET ?", {
       id: answer.id,
       department_name: answer.department,
     });
     console.log(`Success! This department has been added to your database: ${answer.department}`);
+    // viewDepartments();
     startProgram();
   } catch (err) {
     console.log(err);
@@ -152,12 +163,20 @@ var addRole = async () => {
         message: "Which department does this role belong in?",
       },
     ]);
+    var listOfRoles = await connection.query("SELECT * FROM role");
+    var doesRoleExist = listOfRoles.some(each => each.title === answer.title);
+      if (doesRoleExist) {
+        console.log("Role already exists, please try another role!");
+        startProgram();
+        return
+      } 
     var result = await connection.query("INSERT INTO role SET ?", {
       title: answer.title,
       salary: answer.salary,
       department_id: answer.department,
     });
     console.log(`This role has been added: ${answer.title}`);
+    // viewRoles();
     startProgram();
   } catch (err) {
     console.log(err);
@@ -171,7 +190,7 @@ var addEmployee = async () => {
     var empRow = await connection.query("SELECT * FROM role");
     var choicesArr = empRow.map((employeeRole) => {
       return {
-        name: employeeRole.first_name + employeeRole.last_name,
+        name: employeeRole.title,
         value: employeeRole.id,
       };
     });
@@ -215,9 +234,11 @@ var addEmployee = async () => {
       id: answer.id,
       first_name: answer.first_name,
       last_name: answer.last_name,
-      role_id: answer.role_id || 0,
+      role_id: answer.role_id,
       manager_id: answer.manager_id,
     });
+    console.log(`Success! This employee has been added to your database: ${answer.first_name + answer.last_name}`);
+    // viewEmployees();
     startProgram();
   } catch (err) {
     console.log(err);
@@ -228,7 +249,7 @@ var addEmployee = async () => {
 // ========== VIEW all departments ==========
 var viewDepartments = async () => {
   try {
-    var showTable = await connection.query("SELECT * FROM department");
+    var showTable = await connection.query("SELECT employees.id, CONCAT(employees.first_name, ' ', employees.last_name) AS employee, department.department_name AS department FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department on role.department_id = department.id");
     console.table(
       "=================================================",
       "               ALL DEPARTMENTS",
@@ -246,7 +267,7 @@ var viewDepartments = async () => {
 // ========== VIEW all roles ==========
 var viewRoles = async () => {
   try {
-    var showTable = await connection.query("SELECT * FROM role");
+    var showTable = await connection.query("SELECT role.id, role.title, role.salary FROM role INNER JOIN department ON role.department_id = department.id");
     console.table(
       "=================================================",
       "               ALL ROLES",
@@ -264,14 +285,15 @@ var viewRoles = async () => {
 // ========== VIEW all employees ==========
 var viewEmployees = async () => {
   try {
-    var showTable = await connection.query("SELECT * FROM employees");
+    var showTable = await connection.query("SELECT employees.id, employees.first_name, employees.last_name, role.title, department.department_name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees LEFT JOIN role on employees.role_id = role.id LEFT JOIN department on role.id = department.id LEFT JOIN employees manager on manager.manager_id = employees.manager_id");
+    // var showTable = await connection.query("SELECT  FROM employees");
     
     console.table(
-      "=================================================",
-      "               ALL EMPLOYEES",
-      "=================================================",
+      "===========================================================================================================",
+      "                                              ALL EMPLOYEES",
+      "===========================================================================================================",
       showTable,
-      "=================================================",
+      "===========================================================================================================",
       );
     startProgram();
   } catch (err) {
@@ -281,49 +303,57 @@ var viewEmployees = async () => {
 };
 
 // ========== UPDATE all employee roles ==========
-// var updateEmployeeRoles = async () => {
-//   try {
-//     var updateEmp = await connection.query("SELECT id, CONCAT(first_name, ' ', last_name) AS emp");
-//     var empChoices = addEmployee.map(({ id, first_name, last_name }) => ({
-//       name: `${first_name} ${last_name}`,
-//       value: id,
-//     }));
+var updateEmployeeRoles = async () => {
+  try {
+    var empRow = await connection.query("SELECT * FROM employees");
+    var choicesArr = empRow.map((employeeName) => {
+      return {
+      name: employeeName.first_name + employeeName.last_name,
+      value: employeeName.id,
+      }
+    });
 
-//     //  var choicesArr = updateEmp.map((roleUpdate) => {
-//     //    return {
-//     //      name: employeeRole.first_name + employeeRole.last_name,
-//     //      value: roleUpdate.id
-//     //    }
-//     //  })
-//     //  console.log(roleUpdate);
+    var employeeAnswer = await inquirer.prompt([
+      {
+        name: "employee_id",
+        type: "list",
+        message: "Which employee would you like to update?",
+        choices: choicesArr,
+      },
+    ]);
+    var roleRow = await connection.query("SELECT * FROM role");
+    var roleChoicesArr = roleRow.map((employeeRole) => {
+      return {
+        name: employeeRole.title,
+        value: employeeRole.id
+      }
+    });
+    var roleAnswer = await inquirer.prompt([
+      {
+        name: "role_id",
+        type: "list",
+        message: "Choose a new role",
+        choices: roleChoicesArr
+      }
+    ])
+    console.log(employeeAnswer);
+    console.log(roleAnswer);
 
-//     // var answer = await connection.query("UPDATE employees SET employees.role_id = ? WHERE employees.first_name, employees.last_name, employees.id", (err, res));
-//     var updateEmpId = await prompt([
-//       {
-//         name: "employee_id",
-//         type: "list",
-//         message: "Which employee's role would you like to update?",
-//         choices: empChoices,
-//       },
-//     ]);
+    // var result = await connection.query(`UPDATE employees SET role_id = ${roleAnswer.role_id} WHERE id = ${employeeAnswer.employee_id}`);
+    var result = await connection.query(`UPDATE employees SET ? WHERE ?`, [{role_id: roleAnswer.role_id}, {id: employeeAnswer.employee_id}]);
+    
+    console.log("Success! Role updated!");
+    startProgram();
 
-//     var rolesChoice = roles.map(({ id, title }) => ({
-//       name: title,
-//       value: id,
-//     }));
-//     var { roles } = await prompt([
-//       {
-//         name: "role_id",
-//         type: "list",
-//         message: "Which role would you like to change?",
-//         choices: rolesChoice,
-//       },
-//     ]);
-//     var result = await connection.query("UPDATE");
-//     console.log("Success! Role updated!");
-//     startProgram();
-//   } catch (err) {
-//     console.log(err);
-//     startProgram();
-//   }
-// };
+  } catch (err) {
+    console.log(err);
+    startProgram();
+  }
+};
+
+
+// ========= EXIT PROGRAM ===============
+var exit = async () => {
+  console.log("Nothing more to add, exiting program now!")
+  connection.end();
+}
