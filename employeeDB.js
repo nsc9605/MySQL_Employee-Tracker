@@ -2,7 +2,6 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 const util = require("util");
 const cTable = require("console.table");
-const { table } = require("console");
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -26,21 +25,6 @@ connection.connect((err) => {
   startProgram();
 });
 
-// Global functions to alert user to use appropriate characters
-const inputVal = (input) => {
-  if (input !== "") {
-    return true;
-  }
-  return "This input can not be empty! Please enter valid characters.";
-};
-
-const numVal = (input) => {
-  if (isNaN(input) === false) {
-    return true;
-  }
-  return "Please enter a numerical id number";
-};
-
 // var to prompt start questions
 var startProgram = async () => {
   try {
@@ -52,7 +36,6 @@ var startProgram = async () => {
         "Add a new department",
         "Add a new role",
         "Add a new employee",
-        "Remove an employee",
         "View all departments",
         "View all roles",
         "View all employees",
@@ -71,10 +54,6 @@ var startProgram = async () => {
 
       case "Add a new employee":
         addEmployee();
-        break;
-
-      case "Remove an employee":
-        removeEmployee();
         break;
 
       case "View all departments":
@@ -107,6 +86,21 @@ var startProgram = async () => {
   }
 };
 
+// Global functions to alert user to use appropriate characters
+const inputVal = (input) => {
+  if (input !== "") {
+    return true;
+  }
+  return "This input can not be empty! Please enter valid characters.";
+};
+
+const numVal = (input) => {
+  if (isNaN(input) === false) {
+    return true;
+  }
+  return "Please enter a numerical id number";
+};
+
 // ========== Add new department ==========
 var addDepartment = async () => {
   try {
@@ -118,6 +112,8 @@ var addDepartment = async () => {
         validate: inputVal,
       },
     ]);
+
+  // Prevention of repetition of departments being added to database
     var listOfDepartments = await connection.query("SELECT * FROM department");
     var doesDepartmentExist = listOfDepartments.some(each => each.department_name === answer.department);
       if (doesDepartmentExist) {
@@ -169,6 +165,7 @@ var addRole = async () => {
         message: "Which department does this role belong in?",
       },
     ]);
+    // To prevent repetition of roles being added to database
     var listOfRoles = await connection.query("SELECT * FROM role");
     var doesRoleExist = listOfRoles.some(each => each.title === answer.title);
       if (doesRoleExist) {
