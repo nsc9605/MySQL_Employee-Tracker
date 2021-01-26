@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
   database: "employeeDB",
 });
 
-// Use built-in utils to have connection.query
+// Use built-in utils to have connection.query 
 connection.query = util.promisify(connection.query);
 
 // Connect to the MySQL server and SQL Database
@@ -190,6 +190,7 @@ var addRole = async () => {
 // ========== Add new employee ===========
 var addEmployee = async () => {
   try {
+    // List of roles for choices array to choose from
     var empRow = await connection.query("SELECT * FROM role");
     var choicesArr = empRow.map((employeeRole) => {
       return {
@@ -197,7 +198,7 @@ var addEmployee = async () => {
         value: employeeRole.id,
       };
     });
-    // console.log(choicesArr);
+    // List of employees to choose from for manager
     var managerInfo = await connection.query("SELECT * FROM employees");
     var managerArr = managerInfo.map((empManager) => {
       return {

@@ -25,6 +25,12 @@ VALUES
 
 INSERT INTO employees (first_name, last_name)
 VALUES 
-    ("Triona", "Sherlock", ),
+    ("Triona", "Sherlock"),
     ("Amy", "Cody"),
-    ("Archie", "Dolan");
+    ("Archie", "Dolan"),
+    ("Dahlia", "Anagnostakos"),
+    ("Rondal","Robinson"),
+    ("Steise","Moira")
+    ("Kristin","Manning")
+    ("Andrew","Simons"),
+    ("Diana","Pikarski");
