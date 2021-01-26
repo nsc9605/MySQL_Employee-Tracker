@@ -6,7 +6,6 @@
 
 This is a CLI-based application which is aimed to help companies keep track of their employees, departments and roles of a large company. This uses the MySQL Database "EmployeeTrackerDB", Inquirer, and console.table() which allows the user to insert, view, modify, update, and data within the EmployeeTrackerDB database with his inside the MySQL. This application allows for an employee to be updated providing a list to choose from the current employees, ability to select a new role, and also change and update their manager if needed. Some employees are the manager so there is a "none" option at the bottom if no manager is needed.  
 
-[Click here to view the full demo!](https://drive.google.com/file/d/1UnpD8go-dUUZUuwJR6agj0hCmEXqLyvU/view)
 
 ## Table of Contents
 
@@ -35,6 +34,8 @@ This is a CLI-based application which is aimed to help companies keep track of t
 
 ### Demonstration Gif
 ![Employee Tracker Gif](./assets/demo.gif)
+
+[Click here to view the full demo!](https://drive.google.com/file/d/1UnpD8go-dUUZUuwJR6agj0hCmEXqLyvU/view)
 
 
 ## Installation
