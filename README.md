@@ -4,13 +4,13 @@
 
 ## Description
 
-This is a CLI-based application which uses the MySQL Database "EmployeeTrackerDB", Inquirer, and console.table() which allows the user to insert, view, modify, update, and data within the EmployeeTrackerDB database with his inside the MySQL. 
+This is a CLI-based application which is aimed to help companies keep track of their employees, departments and roles of a large company. This uses the MySQL Database "EmployeeTrackerDB", Inquirer, and console.table() which allows the user to insert, view, modify, update, and data within the EmployeeTrackerDB database with his inside the MySQL. This application allows for an employee to be updated providing a list to choose from the current employees, ability to select a new role, and also change and update their manager if needed. Some employees are the manager so there is a "none" option at the bottom if no manager is needed.  
 
-[Click me to deploy app!](https://)
+[Click here to view the full demo!](https://drive.google.com/file/d/1UnpD8go-dUUZUuwJR6agj0hCmEXqLyvU/view)
 
 ## Table of Contents
 
-- [Features](#features)
+-[Demonstration](#demonstration)
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
@@ -18,15 +18,30 @@ This is a CLI-based application which uses the MySQL Database "EmployeeTrackerDB
 - [Technologies](#technologies)
 - [Questions](#questions)
 
-## Features
-
-
 
 ## Demonstration
+
+### Main Menu
+![Main Menu](./assets/main.png)
+
 ### View All Roles
-![Employee Tracker Gif](./assets/all_roles.png)
+![Employee Tracker Roles](./assets/all_roles.png)
+
+### View All Employees
+![All Employees](./assets/ViewEmployees.png)
+
+### Seed To Occupy DB
+![Seed To Occupy](./assets/seedsql.png)
+
+### Demonstration Gif
+![Employee Tracker Gif](./assets/demo.gif)
+
 
 ## Installation
+
+To install, the user can clone this repository to their personal computer and then install the dependencies listed below.
+The user must then make sure they have a visual database such as MySQL Workbench as used for this project. 
+The user will insert the Schema and Seed file to create the database, tables, and use the seed.sql to occupy the database.
 
 The following dependencies are required to be installed for this application to run properly:
 
@@ -35,16 +50,17 @@ The following dependencies are required to be installed for this application to 
       npm i console.table
 
 
-
 ## Usage
 
 Once all dependencies have been installed, please follow the directions below in order to run this app:
 
 Run this application in the terminal by running `node employeeDB.js` command and will begin prompting user to answer questions/select what they want to do.
 
+
 ## License
 
 This application is licensed under the MIT License.
+
 
 ## Contribution
 
@@ -58,6 +74,7 @@ This video helped get me started setting up my files and making sure I had all r
 
 - [Click me to view video!](https://www.youtube.com)
 
+
 ## Technologies
 
 - [Visual Studio Code](https://code.visualstudio.com/)
@@ -65,6 +82,7 @@ This video helped get me started setting up my files and making sure I had all r
 - [MySQL](https://dev.mysql.com/)
 - [MySQL Workbench](https://dev.mysql.com/downloads/workbench/)
 - Terminal / Git Bash
+
 
 ## Questions
 

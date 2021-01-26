@@ -22,6 +22,11 @@ connection.connect((err) => {
     return;
   }
   console.log("Successfully connected to MySQL server!");
+  console.table(
+    "=================================================",
+    "        WELCOME TO MYSQL EMPLOYEE TRACKER",
+    "=================================================",
+  );
   startProgram();
 });
 
@@ -127,8 +132,10 @@ var addDepartment = async () => {
       id: answer.id,
       department_name: answer.department,
     });
-    console.log(
-      `Success! This department has been added to your database: ${answer.department}`
+    console.table(
+      "----------------------------------------------------------------------------------",
+      `  Success! This department has been added to your database: ${answer.department}  `,
+      "----------------------------------------------------------------------------------",
     );
     // viewDepartments();
     startProgram();
@@ -182,7 +189,10 @@ var addRole = async () => {
       salary: answer.salary,
       department_id: answer.department,
     });
-    console.log(`This role has been added: ${answer.title}`);
+    console.table(
+      "---------------------------------------------------",
+        ` This role has been added: ${answer.title}  `,
+      "---------------------------------------------------");
     // viewRoles();
     startProgram();
   } catch (err) {
@@ -259,10 +269,12 @@ var addEmployee = async () => {
       role_id: answer.role_id,
       manager_id: answer.manager_id,
     });
-    console.log(
-      `Success! This employee has been added to your database: ${
+    console.table(
+      "-------------------------------------------------------------------",
+      ` Success! This employee has been added to your database: ${
         answer.first_name + " " + answer.last_name
-      }`
+      }`,
+      "-------------------------------------------------------------------",
     );
     // viewEmployees();
     startProgram();
@@ -338,6 +350,7 @@ var viewEmployees = async () => {
 // ========== UPDATE all employee roles ==========
 var updateEmployeeRoles = async () => {
   try {
+    // List of employee choices to update.
     var empRow = await connection.query("SELECT * FROM employees");
     var choicesArr = empRow.map((employeeName) => {
       return {
@@ -354,6 +367,7 @@ var updateEmployeeRoles = async () => {
         choices: choicesArr,
       },
     ]);
+    // List of roles choices to update.
     var roleRow = await connection.query("SELECT * FROM role");
     var roleChoicesArr = roleRow.map((employeeRole) => {
       return {
@@ -369,7 +383,7 @@ var updateEmployeeRoles = async () => {
         choices: roleChoicesArr,
       },
     ]);
-    // List of employees to choose from for manager
+    // List of choices of managers to update.
     var managerInfo = await connection.query("SELECT * FROM employees");
     var managerArr = managerInfo.map((empManager) => {
       return {
@@ -414,6 +428,9 @@ var updateEmployeeRoles = async () => {
 
 // ========= EXIT PROGRAM ===============
 var exit = async () => {
-  console.log("Nothing more to add, exiting program now!");
+  console.table(
+    "=================================================",
+    "    Nothing more to add, exiting program now!   ",
+    "================================================="),
   connection.end();
 };
