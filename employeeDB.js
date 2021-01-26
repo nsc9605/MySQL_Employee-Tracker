@@ -257,7 +257,8 @@ var addEmployee = async () => {
 // ========== VIEW all departments ==========
 var viewDepartments = async () => {
   try {
-    var showTable = await connection.query("SELECT employees.id, CONCAT(employees.first_name, ' ', employees.last_name) AS employee, department.department_name AS department FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department on role.department_id = department.id");
+    // var showTable = await connection.query("SELECT employees.id, CONCAT(employees.first_name, ' ', employees.last_name) AS employee, department.department_name AS department FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department on role.department_id = department.id");
+    var showTable = await connection.query("SELECT * FROM department ORDER BY id");
     console.table(
       "=================================================",
       "               ALL DEPARTMENTS",
@@ -275,13 +276,13 @@ var viewDepartments = async () => {
 // ========== VIEW all roles ==========
 var viewRoles = async () => {
   try {
-    var showTable = await connection.query("SELECT role.id, role.title, role.salary FROM role INNER JOIN department ON role.department_id = department.id");
+    var showTable = await connection.query("SELECT title, salary, department_name AS department FROM role INNER JOIN department ON role.department_id = department.id");
     console.table(
-      "=================================================",
-      "               ALL ROLES",
-      "=================================================",
+      "==================================================================",
+      "                          ALL ROLES",
+      "==================================================================",
       showTable,
-      "=================================================",
+      "==================================================================",
       );
     startProgram();
   } catch (err) {

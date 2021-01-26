@@ -1,11 +1,10 @@
 # MySQL_Employee-Tracker
 
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
 
-Build a solution for managing a company's employees using node, inquirer, and MySQL.
+This is a CLI-based application which uses the MySQL Database "EmployeeTrackerDB", Inquirer, and console.table() which allows the user to insert, view, modify, update, and data within the EmployeeTrackerDB database with his inside the MySQL. 
 
 [Click me to deploy app!](https://)
 
@@ -24,8 +23,8 @@ Build a solution for managing a company's employees using node, inquirer, and My
 
 
 ## Demonstration
-
-![Employee Tracker Gif](./public/assets/images/)
+### View All Roles
+![Employee Tracker Gif](./assets/all_roles.png)
 
 ## Installation
 
@@ -35,11 +34,13 @@ The following dependencies are required to be installed for this application to 
       npm install mysql
       npm i console.table
 
+
+
 ## Usage
 
 Once all dependencies have been installed, please follow the directions below in order to run this app:
 
-Run this application in the terminal by running `node server.js` command and will open in browser by using `localhost:(port #)`. A deployed link is provided for this specific project through Heroku.
+Run this application in the terminal by running `node employeeDB.js` command and will begin prompting user to answer questions/select what they want to do.
 
 ## License
 
