@@ -9,7 +9,7 @@ This is a CLI-based application which is aimed to help companies keep track of t
 
 ## Table of Contents
 
--[Demonstration](#demonstration)
+- [Demonstration](#demonstration)
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
