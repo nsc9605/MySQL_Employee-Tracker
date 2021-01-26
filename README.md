@@ -71,10 +71,6 @@ This project was creating with help from:
 - My tutor [Eric Wallen](https://github.com/ericwallen)
 - Help from other students in the class in a private study group.
 
-This video helped get me started setting up my files and making sure I had all required dependencies installed:
-
-- [Click me to view video!](https://www.youtube.com)
-
 
 ## Technologies
 
