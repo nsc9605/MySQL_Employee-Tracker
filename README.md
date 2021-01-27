@@ -55,7 +55,7 @@ The following dependencies are required to be installed for this application to 
 
 Once all dependencies have been installed, please follow the directions below in order to run this app:
 
-Run this application in the terminal by running `node employeeDB.js` command and will begin prompting user to answer questions/select what they want to do.
+Run this application in the terminal by running `node server.js` command and will begin prompting user to answer questions/select what they want to do.
 
 
 ## License
@@ -83,6 +83,6 @@ This project was creating with help from:
 
 ## Questions
 
-For any other questions about this project, please visit my GitHub page: [GitHub Profile](https://github.com/nsc9605/Express_NoteTaker).
+For any other questions about this project, please visit my GitHub page: [GitHub Profile](https://github.com/nsc9605/MySQL_Employee-Tracker).
 
 Or you can email me directly at: [Nicole Catapano](mailto:nsc9605@gmail.com).
