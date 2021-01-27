@@ -409,8 +409,6 @@ var updateEmployeeRoles = async () => {
       },
     ]);
 
-    console.log(employeeAnswer);
-    console.log(managerAnswer);
 
     // var result = await connection.query(`UPDATE employees SET role_id = ${roleAnswer.role_id} WHERE id = ${employeeAnswer.employee_id}`);
     var result = await connection.query(`UPDATE employees SET ?, ? WHERE ?`, [
@@ -420,7 +418,6 @@ var updateEmployeeRoles = async () => {
     ]);
 
     console.log("Success! Role updated!");
-    viewEmployees();
     startProgram();
   } catch (err) {
     console.log(err);

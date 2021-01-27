@@ -35,7 +35,7 @@ This is a CLI-based application which is aimed to help companies keep track of t
 ### Demonstration Gif
 ![Employee Tracker Gif](./assets/demo.gif)
 
-[Click here to view the full demo!](https://drive.google.com/file/d/1UnpD8go-dUUZUuwJR6agj0hCmEXqLyvU/view)
+[Click here to view the full demo!](https://drive.google.com/file/d/1uYEu8ud4B6lMZuqcg8MWIQ3SgX4ao1ec/view)
 
 
 ## Installation
